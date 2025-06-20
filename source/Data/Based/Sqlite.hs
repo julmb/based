@@ -20,7 +20,6 @@ import Numeric.Natural
 import Database.SQLite.Simple
 import Database.SQLite.Simple.ToField
 import Database.SQLite.Simple.FromField
-import Data.Based.Tools
 import Data.Based.Unfoldable
 
 instance ToField Natural where toField = SQLInteger . fromIntegral
@@ -52,7 +51,7 @@ run1F :: Typeable g => Unfoldable g => FromRow b => Query -> ReaderT Connection 
 run1F template = runIF template ()
 
 runFI :: Traversable f => ToRow a => FromRow b => Query -> f a -> ReaderT Connection IO (f b)
-runFI template = fmap2 runIdentity . runFF template
+runFI template = fmap (fmap runIdentity) . runFF template
 
 runII :: ToRow a => FromRow b => Query -> a -> ReaderT Connection IO b
 runII template = fmap runIdentity . runFI template . Identity
