@@ -3,19 +3,20 @@
 
 module Data.Based.Sqlite
 (
-    connect, transact,
+    fieldJson, connect, transact,
     runFF, runIF, run1F, runFI, runII, run1I, runF1, runI1, run11
 )
 where
 
 import Type.Reflection
 import Control.Exception
+import Control.Monad
 import Control.Monad.Reader
-import Data.Functor
 import Data.Functor.Identity
 import Data.Foldable
 import Data.Traversable
 import Data.Proxy
+import Data.Aeson
 import Numeric.Natural
 import Database.SQLite.Simple
 import Database.SQLite.Simple.ToField
@@ -30,6 +31,9 @@ instance FromField Natural where
         _ -> returnError Incompatible field "requires INTEGER"
 
 instance FromRow () where fromRow = pure ()
+
+fieldJson :: FromJSON a => FieldParser a
+fieldJson = fromField >=> throwDecodeStrictText
 
 connect :: FilePath -> ReaderT Connection IO a -> IO a
 connect path action = withConnection path $ runReaderT $ run11 "PRAGMA foreign_keys = ON" >> action
