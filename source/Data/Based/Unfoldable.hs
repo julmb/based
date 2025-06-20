@@ -9,7 +9,7 @@ import Data.Proxy
 import Data.List.NonEmpty (NonEmpty (..))
 
 invert :: Alternative f => Monad f => f a -> f ()
-invert a = optional a >>= maybe (pure mempty) (pure empty)
+invert a = optional a >>= maybe (pure ()) (const empty)
 
 class Unfoldable f where unfold :: Monad m => m (Maybe a) -> m (Maybe (f a))
 
