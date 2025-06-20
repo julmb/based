@@ -17,11 +17,11 @@ import Data.Foldable
 import Data.Traversable
 import Data.Proxy
 import Data.Aeson
+import Data.Based.Unfoldable
 import Numeric.Natural
 import Database.SQLite.Simple
 import Database.SQLite.Simple.ToField
 import Database.SQLite.Simple.FromField
-import Data.Based.Unfoldable
 
 instance ToField Natural where toField = SQLInteger . fromIntegral
 instance FromField Natural where
