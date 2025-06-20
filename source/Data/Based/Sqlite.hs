@@ -38,8 +38,8 @@ fieldJson = fromField >=> throwDecodeStrictText
 connect :: FilePath -> ReaderT Connection IO a -> IO a
 connect path action = withConnection path $ runReaderT $ run11 "PRAGMA foreign_keys = ON" >> action
 
-transact :: FilePath -> ReaderT Connection IO a -> IO a
-transact path action = connect path $ ReaderT $ \ connection -> withTransaction connection $ runReaderT action connection
+transact :: ReaderT Connection IO a -> ReaderT Connection IO a
+transact action = ReaderT $ \ connection -> withTransaction connection $ runReaderT action connection
 
 runFF :: forall f g a b. Typeable g => Traversable f => Unfoldable g => ToRow a => FromRow b =>
     Query -> f a -> ReaderT Connection IO (f (g b))
