@@ -15,7 +15,7 @@ common configuration
     LambdaCase
     RoleAnnotations
   cc-options: -Wall -Wconversion
-  ghc-options: -Wall -Wunused-packages -Wmissing-export-lists -Wprepositive-qualified-module -Wno-name-shadowing
+  ghc-options: -Wall -Wunused-packages -Wmissing-export-lists -Wprepositive-qualified-module -Wno-name-shadowing -Wredundant-constraints
 
 library
   import: configuration
